@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>VZ+</title>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+	crossorigin="anonymous" />
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+	crossorigin="anonymous" />
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+	crossorigin="anonymous"></script>
+<!-- Toastr -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
+
+<!-- Fontawesome -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+<link rel='stylesheet' href='stylesheets/moduleAuswahlen.css' />
+<link rel='stylesheet' href='stylesheets/navbar.css' />
+<link rel="stylesheet" href="stylesheets/footer.css"/>
+<!-- Calendar -->
+<link rel='stylesheet' href='calendarLib/cupertino/jquery-ui.min.css' />
+<link href='calendarLib/fullcalendar.css' rel='stylesheet' />
+<link href='calendarLib/fullcalendar.print.css' rel='stylesheet'
+	media='print' />
+<link
+	href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/base/jquery-ui.css"
+	rel="stylesheet" type="text/css" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+
+<script type="text/javascript">
+function semesterAuswahlenFunc(value, modulId, title) {
+	
+	$.ajax({
+        url : $('#auswahl').attr("action"),
+        data : {select : value, modulId : modulId, title : title},
+        type : "GET",
+        success : function(msg) {
+        	// Display an info toast with no title
+        	toastr.info(msg);
+        },
+        error : function(msg)
+        {
+        	toastr.info("Error " + msg);
+        }
+       
+    });
+ };
+</script>
+
+</head>
+<body>
+	<div th:replace="fragments/navbar :: header"></div>
+
+	<div class="container">
+		<div class="row">
+
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">Module</h3>
+				</div>
+				<div class="panel-body">
+					<div class="container-fluid row-fluid col-md-3"
+						th:each="modulList : ${modulList}">
+						<div class="col-md-12">
+							<a class="thumbnail module"
+								style="min-height: 200px; height: 200px;">
+								<h4 style="color: #FFFFF0; font-size: 100%;"
+									th:text="${modulList.title}"></h4> <input type="hidden"
+								name="modulId" th:value="${modulList.id}" />
+								<div th:each="modulAuswahlList, index : ${modulAuswahlList}">
+								<h4 style="color:#FFFFFF;" th:text="'Semester: ' + ${modulAuswahlList.semester}" th:if="${#lists.contains(modulAuswahlList.modulId, modulList.id)}"/>
+								
+								</div>
+								<form id="auswahl" action="semesterAuswahlen" method="get">
+									<select class="btn-inverse btn-lg btn-block"
+										th:onchange="'javascript:semesterAuswahlenFunc(this.value, \''+${modulList.id}+'\', \''+${modulList.title}+'\');'">
+										<option th:value="0" selected="selected">---Select Semester---</option>
+										<option th:each="i : ${#numbers.sequence(1, 15)}" th:value="${i}" th:text="${i}">Options</option>
+									</select>
+								</form>
+								<br/>
+								<form action="lehrfach" method="get">
+									<input type="hidden"
+									name="modulId" th:value="${modulList.id}" />
+									<button type="submit"
+										class="btn btn-success btn-lg btn-block btn-round boxButton"
+										style="margin-bottom: 20px;">Lehrfach</button>
+
+
+								</form>
+
+							</a>
+						</div>
+					</div>
+
+					<!-- 
+		<div class="panel panel-primary" th:each="modulList : ${modulList}">
+			<div class="panel-heading">
+				<p th:text="${modulList.title}"/>
+			</div>
+			<div class="panel-body">
+				<p th:text="${modulList.comment}"/>
+			</div>
+			<div class="panel-footer">
+				<form action="studienrichtungAuswahl" method="get">
+					<button type="submit" class="btn btn-info btn-lg btn-block">Add neue Studienrichtung</button>
+				</form>
+			</div>
+		
+		</div>
+		 -->
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>VZ+</title>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+	crossorigin="anonymous" />
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+	crossorigin="anonymous" />
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+	crossorigin="anonymous"></script>
+<!-- Toastr -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
+
+<!-- Fontawesome -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css" />
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/i18n/defaults-*.min.js"></script>
+
+<link rel='stylesheet' href='stylesheets/navbar.css' />
+<link rel="stylesheet" href="stylesheets/footer.css"/>
+
+<style type="text/css">
+@media (max-height: 500px) {
+.footer-distributed{
+	position: absolute;
+	bottom: 0px;
+	background-color: #292c2f;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+	box-sizing: border-box;
+	width: 100%;
+	text-align: left;
+	font: bold 16px sans-serif;
+
+	padding: 55px 50px;
+	margin-top: 80px;
+}
+}
+@media (max-width: 880px) {
+
+	.footer-distributed{
+		position: static;
+		font: bold 14px sans-serif;
+	}
+}
+
+</style>
+</head>
+<body>
+	<div th:replace="fragments/navbar :: header"></div>
+	<div class="container">
+		<div class="row">
+
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">Information</h3>
+				</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>Studienrichtung</th>
+									<th>Studienfachgebiet</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="studiumInformation : ${studiumInformation}">
+				  				<td class="active" th:text="${studiumInformation.studienrichtungName}">...</td>
+				  				<td class="active" th:text="${studiumInformation.fachgebietName}">...</td>
+				  				<input type="hidden" name="userId" th:value="${studiumInformation.id}"/>
+				  				<input type="hidden" name="fachgebietId" th:value="${studiumInformation.fachgebietId}"/>
+				  				<input type="hidden" name="studienrichtungId" th:value="${studiumInformation.studienrichtungId}"/>
+	  			</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="container-fluid">
+						<h1>Add Neue Studienfachgebiet</h1>
+						<div class="alert alert-success" role="alert" th:text="${studienrichtungName}"></div>
+						<form action="addStudienrichtung" method="get">
+						<select id="fachGebiet" class="selectpicker col-xs-12"
+								data-style="btn-info"  name="id">
+								<option th:each="fgList : ${fachGebietList}"
+									th:value="${fgList.id}" th:text="${fgList.title}">Studienfachgebiet</option>
+						</select>
+						<input type="hidden" id="studienRichtungId" name="studienrichtungID" th:value="${studienRichtungId}" />
+						<br />
+						<br />
+						<button type="submit"
+								class="btn btn-success pull-right btn-md col-xs-6 col-sm-3"
+								style="margin-left: 10px;">Save</button>
+						</form>
+						<form action="studienrichtungAuswahl" method="get">
+						<button type="submit"
+								class="btn btn-primary pull-right btn-md col-xs-6 col-sm-3"
+								style="margin-left: 10px;">Zurück</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

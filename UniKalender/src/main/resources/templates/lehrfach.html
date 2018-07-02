@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>VZ+</title>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+	crossorigin="anonymous" />
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+	crossorigin="anonymous" />
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+	crossorigin="anonymous"></script>
+<!-- Toastr -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
+
+<!-- Fontawesome -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+<link rel='stylesheet' href='stylesheets/navbar.css' />
+<link rel="stylesheet" href="stylesheets/footer.css"/>
+<style>
+.coursePanel {
+	-moz-border-radius: 36px 0px 0px;
+	-webkit-border-radius: 36px 0px 0px 0px;
+	/*This is the correct shorthand for webkit*/
+	border-radius: 36px 0px 0px;
+	/*IE 7 AND 8 DO NOT SUPPORT BORDER RADIUS*/
+	-moz-box-shadow: 0px 0px 6px #000000;
+	-webkit-box-shadow: 0px 0px 6px #000000;
+	box-shadow: 0px 0px 6px #000000;
+	/*IE 7 AND 8 DO NOT SUPPORT BLUR PROPERTY OF SHADOWS*/
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr= '#61d1ff',
+		endColorstr= '#4571ff');
+	/*INNER ELEMENTS MUST NOT BREAK THIS ELEMENTS BOUNDARIES*/
+	/*Element must have a height (not auto)*/
+	/*All filters must be placed together*/
+	-ms-filter:
+		"progid:DXImageTransform.Microsoft.gradient(startColorstr = '#61d1ff', endColorstr = '#4571ff')";
+	/*Element must have a height (not auto)*/
+	/*All filters must be placed together*/
+	background-image: -moz-linear-gradient(top, #61d1ff, #4571ff);
+	background-image: -ms-linear-gradient(top, #61d1ff, #4571ff);
+	background-image: -o-linear-gradient(top, #61d1ff, #4571ff);
+	background-image: -webkit-gradient(linear, center top, center bottom, from(#61d1ff),
+		to(#4571ff));
+	background-image: -webkit-linear-gradient(top, #61d1ff, #4571ff);
+	background-image: linear-gradient(top, #61d1ff, #4571ff);
+	/*--IE9 DOES NOT SUPPORT CSS3 GRADIENT BACKGROUNDS--*/
+}
+
+.panel-heading a:after {
+	font-family: 'Glyphicons Halflings';
+	content: "\e114";
+	float: right;
+	color: grey;
+}
+
+.panel-heading a.collapsed:after {
+	content: "\e080";
+}
+</style>
+<script>
+function function1(a)
+{
+	alert("hallo");
+	return false;
+}
+
+</script>
+</head>
+<body>
+	<div th:replace="fragments/navbar :: header"></div>
+	<div class="container">
+		<div class="row">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">Information</h3>
+				</div>
+				<div class="panel-body" th:each="courseList : ${courseList}">
+					<div class="thumbnail coursePanel col-sm-12 col-md-12">
+						<h3 class="col-md-8" th:text="${courseList.longname}"
+							style="color: #000000"></h3>
+						<h3 class="col-md-2" th:text="${courseList.type}" />
+						<h3 class="col-md-2" th:text="${courseList.ects} + ' ECTS'" />
+					</div>
+					<div th:each="groupList : ${groupList}"
+						th:if="${groupList.courseId == courseList.courseId}">
+						<div class="panel-group" id="accordion">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion"
+											th:href="'#'+${groupList.groupId}"
+											th:text="'Group ' + ${groupList.groupId}"> </a>
+											<br/>
+											
+										
+									</h4>
+								</div>
+								<div th:id="${groupList.groupId}"
+									class="panel-collapse collapse">
+									<div class="panel-body">
+										<table class="table table-bordered col-md-12"
+											th:if="${groupList.courseId == courseList.courseId}">
+											<thead>
+												<tr>
+													<th>Begin Zeit</th>
+													<th>End Zeit</th>
+													<th>Ort</th>
+													<th>Raum</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="zeitList : ${zeitList}"
+													th:if="${zeitList.groupId == groupList.groupId}">
+													<td th:text="${zeitList.begin.getTime()}">...</td>
+													<td th:text="${zeitList.end.getTime()}">...</td>
+													<td th:text="${zeitList.address}">...</td>
+													<td th:text="${zeitList.room}">...</td>
+													<input type="hidden" name="userId"
+														th:value="${zeitList.id}" />
+
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								
+								<form action="lehrfachAbmelden" method="get" th:if="${#lists.contains(groupIdList, groupList.groupId)}">
+								<div class="panel-footer">
+									<button type="submit" class="btn btn-default btn-sm btn-block" th:text="'Angemeldet Group ' + ${groupList.groupId}"></button>
+									<input type="hidden" name="groupId" th:value="${groupList.groupId}"/>
+									<input type="hidden" name="modulId" th:value="${modulId}"/>
+								</div>
+								</form>
+								<form action="lehrfachAnmelden" method="get" th:if="${not #lists.contains(groupIdList, groupList.groupId)}">
+								<div class="panel-footer">
+									<button type="submit" class="btn btn-info btn-sm btn-block" th:text="'Anmelden Group ' + ${groupList.groupId}"></button>
+									<input type="hidden" name="groupId" th:value="${groupList.groupId}"/>
+									<input type="hidden" name="modulId" th:value="${modulId}"/>
+								</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

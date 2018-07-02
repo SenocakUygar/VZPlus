@@ -1,0 +1,184 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Uni Kalendar</title>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+	crossorigin="anonymous" />
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+	crossorigin="anonymous" />
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+	crossorigin="anonymous"></script>
+<!-- Toastr -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
+
+<!-- Fontawesome -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+
+<link rel='stylesheet' href='stylesheets/home.css' />
+<link rel='stylesheet' href='stylesheets/navbar.css' />
+<link rel="stylesheet" href="stylesheets/footer.css"/>
+
+</head>
+<body>
+
+	<!-- Fixed navbar -->
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand text-center" href="/"
+					style="color: #333; line-height: 45px;"><strong>VZ+</strong></a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class=""><a class="text-center" href="/"
+						style="color: #333;"><strong>Home</strong></a></li>
+					<li><a class="text-center" href="calendar" style="color: #333;"><strong>Calendar</strong></a></li>
+					<li><a class="text-center" href="myModuls"
+						style="color: #333;"><strong>MyModuls</strong></a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class=""><a href="./" style="color: #333;"><strong th:text="${email}">Email</strong></a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</nav>
+
+
+	<!-- Carousel
+================================================== -->
+	<div id="myCarousel" class="carousel slide">
+		<!-- Indicators -->
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1"></li>
+			<li data-target="#myCarousel" data-slide-to="2"></li>
+		</ol>
+		<div class="carousel-inner">
+			<div class="item active">
+				<img src="images/uniwien.jpg" height="10" width="100%"
+					class="img-responsive" />
+				<div class="container">
+					<div class="carousel-caption">
+						<h1>Hier kommt Motto</h1>
+						<p></p>
+						<p>
+							<a class="btn btn-lg btn-primary" href="#">Über uns</a>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<img src="images/W29_Bibliothek.jpg" class="img-responsive" height="10"
+					width="100%" />
+				<div class="container">
+					<div class="carousel-caption">
+						<h1></h1>
+						<p></p>
+						<p>
+							<a class="btn btn-large btn-primary" href="#">Todo</a>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="item">
+				<img src="images/a.jpg" class="img-responsive" height="10"
+					width="100%" />
+				<div class="container">
+					<div class="carousel-caption">
+						<h1></h1>
+						<p></p>
+						<p>
+							<a class="btn btn-large btn-primary" href="#">Todo</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Controls -->
+		<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+			<span class="icon-prev"></span>
+		</a> <a class="right carousel-control" href="#myCarousel"
+			data-slide="next"> <span class="icon-next"></span>
+		</a>
+	</div>
+	<!-- /.carousel -->
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6 col-md-4">
+				<div class="thumbnail button1">
+					<img class="selectBild" src="images/Calendar2.jpg" alt=""
+						width="50%" />
+					<div class="caption">
+						<h3>Calender</h3>
+						<p>Kalender anschauen, Lehrveranstaltungen anmelden</p>
+						<form action="calendar" method="get">
+							<button type="submit"
+								class="btn btn-success btn-lg btn-round boxButton">
+								<i class="fa fa-calendar" aria-hidden="true"></i>
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3 col-md-4">
+				<div class="thumbnail button1">
+					<img class="selectBild" src="images/module.jpg" alt="" width="50%" />
+					<div class="caption">
+						<h3>My Modul</h3>
+						<p>Semesterplan anschauen</p>
+						<form action="myModuls" method="get">
+						<button type="submit"
+							class="btn btn-success btn-lg btn-round boxButton">
+							<i class="fa fa-th" aria-hidden="true"></i>
+						</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-4">
+				<div class="thumbnail button1">
+					<img class="selectBild" src="images/forum.jpg" alt="" width="50%" />
+					<div class="caption">
+						<h3>Forum</h3>
+						<p>...</p>
+						
+						<button type="button"
+							class="btn btn-success btn-lg btn-round boxButton">
+							<i class="fa fa-weixin" aria-hidden="true"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

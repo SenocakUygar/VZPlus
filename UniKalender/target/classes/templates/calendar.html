@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8"/>
+<title>VZ+</title>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+	crossorigin="anonymous" />
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+	crossorigin="anonymous" />
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+	integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+	crossorigin="anonymous"></script>
+<!-- Toastr -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.js"></script>
+
+<!-- Fontawesome -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+<link rel='stylesheet' href='stylesheets/navbar.css' />
+<link rel="stylesheet" href="stylesheets/footer.css"/>
+
+<!-- Calendar -->
+<link rel='stylesheet' href='calendarLib/cupertino/jquery-ui.min.css' />
+<link href='calendarLib/fullcalendar.css' rel='stylesheet' />
+<link href='calendarLib/fullcalendar.print.css' rel='stylesheet' media='print' />
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+<script src='calendarLib/moment.min.js'></script>
+<script src='calendarLib/jquery.min.js'></script>
+<script src='calendarLib/fullcalendar.min.js'></script>
+<style>
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+    color: #DF013A;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+</style>
+
+<script>
+
+	$(document).ready(function() {
+		$('#calendar').fullCalendar({
+			theme: true,
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			eventClick: function(event, element) {
+				var modal = document.getElementById('myModal');
+				modal.style.display = "block";
+				var span = document.getElementsByClassName("close")[0];
+				span.onclick = function() {
+				    modal.style.display = "none";
+				}
+				$('#title').html('<p style="font-family:courier;"><b>Title:</b> ' + event.title +'<br/><b>Ort: </b>' + event.ort + '</p>');
+		    },
+			editable: true,
+	         eventSources: [{
+	             url: 'getEvents', 
+	             type: 'GET',
+	             data: {
+	                 start: 'start',
+	                 end: 'end',
+	                 title: 'title'
+	             },
+	             error: function () {
+	                 alert('there was an error while fetching events!');
+	             },
+	             eventColor: '#378006',
+	             textColor: 'black',
+	             dataType: 'json'
+	         }]})
+	});
+</script>
+
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: header"></div>
+
+<div class="container">
+	<div class="row">
+	
+	<div id="myModal" class="modal">
+	 	<!-- Modal content -->
+  		<div class="modal-content">
+    		<span class="close">×</span>
+    		<div class="panel  panel-success">
+			<div class="panel-heading"><h3 class="panel-title">Lehrveranstaltung Information</h3></div>
+			<div class="panel-body">
+			<p id="title"></p>
+			</div>
+			</div>
+    		
+  		</div>
+
+	</div>
+
+	<div class="panel panel-info">
+	<div class="panel-heading"><h3 class="panel-title">Information</h3></div>
+	<div class="panel-body">
+	<div class="table-responsive">
+		<table class="table table-bordered">
+			<thead>
+			    <tr>
+			      <th>Studienrichtung/Studienfachrichtung</th>
+			      <th>Ausprägungsfach</th>
+			      <th></th>
+			      <th></th>
+			    </tr>
+			</thead>
+			<tbody> 
+				<tr th:each="studiumInformation : ${studiumInformation}">
+				<form action="moduleAuswahlen" method="get">
+	  				<td class="active" th:text="${studiumInformation.studienrichtungName}">...</td>
+	  				<td class="active" th:text="${studiumInformation.fachgebietName}">...</td>
+	  				<td>
+	  					
+	  					<button class="btn btn-info" type="submit"><i class="" aria-hidden="true"></i>  Verwalten</button>
+	  					
+	  				</td>
+	  				
+	  				<input type="hidden" name="userId" th:value="${studiumInformation.id}"/>
+	  				<input type="hidden" name="fachgebietId" th:value="${studiumInformation.fachgebietId}"/>
+	  				<input type="hidden" name="studienrichtungId" th:value="${studiumInformation.studienrichtungId}"/>
+	  				</form>
+	  				
+	  			<form action="removeModule" method="get">
+	  				<td>
+	  					<button class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i>  Löschen</button>
+	  					<input type="hidden" name="userId" th:value="${studiumInformation.id}"/>
+	  					<input type="hidden" name="fachgebietId" th:value="${studiumInformation.fachgebietId}"/>
+	  					<input type="hidden" name="studienrichtungId" th:value="${studiumInformation.studienrichtungId}"/>
+	  				</td>
+	  			</form>
+	  			</tr>
+	  			
+  			</tbody>
+		</table>
+	</div>
+	<form action="studienrichtungAuswahl" method="get">
+		<button type="submit" class="btn btn-info btn-lg btn-block">
+		<i class="fa fa-university" aria-hidden="true">  </i> Studienrichtung/Studienfachrichtung hinzufügen
+		</button>
+	</form>
+		</div>
+		</div>
+		
+		<div id='calendar' style=""></div>
+	</div>
+</div>
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
